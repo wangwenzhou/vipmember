@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <meta charaset='utf-8'>
+        <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="../stylesheets/header/manager-header.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <% include manager-header.ejs %>
+        <div class="container content">
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>图片管理</strong>
+                        <a href="/manager/pictures/0/edit" class="btn btn-danger">添加</a>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+                                <th>#</th>
+                                <th>标题</th>
+                                <th>描述</th>
+                                <th>图片</th>
+                                <th>操作</th>
+                            </tr>
+                            <% for (i=0; i<pictures.length; i++){ %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td><%= pictures[i].title %></td>
+                                <td><%= pictures[i].desc %></td>
+                                <td><img src="../<%= pictures[i].img %>" style="height:50px"></td>
+                                <td>
+                                    <a class="btn btn-primary" href="/manager/pictures/<%=pictures[i].pid%>/delete" onClick="return confirm('确定删除？')">删除</a>
+                                    <a class="btn btn-success" href="/manager/pictures/<%=pictures[i].pid%>/edit">编辑</a>
+                                </td>    
+                            </tr>    
+                            <% } %>    
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

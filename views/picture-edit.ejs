@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <meta charaset='utf-8'>
+        <link href="../../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../stylesheets/header/manager-header.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../../jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript">
+        function oploadFile(){
+            var formData = new FormData($("#frmUploadFile")[0]);
+            $.ajax({
+                url: '/picture-imgupload',
+                type: 'POST',
+                data: formData,
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data){
+                    if(200 === data.code) {
+                        $("#avatarpreview").attr('src', '../../../'+data.msg.url);
+                        $("#avatarpreview").attr('style', "display:block");
+                        $("#spanMessage").html("上传成功"+ data.msg.url);
+                    } else {
+                        $("#spanMessage").html("上传失败");
+                    }
+                    $("#avatar").attr('value', data.msg.url);
+                    $("#avatar").attr('placeholder', data.msg.url);
+                },
+                error: function(){
+                    $("#spanMessage").html("未选择文件，请选择");
+                }
+            });
+        }
+    </script>
+    </head>
+    <body>
+        <% include manager-header.ejs %>
+        <div class="container content">
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>种类编辑</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-5">
+                            <form action="/manager/pictures/<%=picture.pid?picture.pid:0 %>/save" method="post">
+                                <section class="panel">
+                                    <div class="input-group">
+                                        <sapn class="input-group-addon">标题</sapn>
+                                        <input class="form-control" type="text" name="title" value="<%= picture.title %>">
+                                    </div>
+                                </section>
+                                <section class="panel">
+                                    <div class="input-group">
+                                        <sapn class="input-group-addon">介绍</sapn>
+                                        <input class="form-control" type="text" name="desc" value="<%= picture.desc%>">
+                                    </div>
+                                </section>
+                                <section class="panel">
+                                    <div class="input-group">
+                                        <sapn class="input-group-addon">图片</sapn>
+                                        <input class="form-control" type="text" readonly="readonly" name="img" value="<%= picture.img%>" id="avatar">
+                                    </div>
+                                </section>
+                                <section class="panel">
+                                    <input class="btn btn-primary" type="submit" value="保存">
+                                </section>     
+                            </form>    
+                        </div>
+                        <div class='col-lg-5'>
+                            <form action='javascript:;' method="post" accept-charset="utf-8" enctype="multipart/form-data" role='form' id='frmUploadFile'>
+                                <div class="m_410">
+                                    <DIV class="mint_1"><label>图片上传选择</label><input type="file" class="hfom5" id="upload_file" name="upload_file" multiple="multiple"></DIV>
+						    	    <DIV class="mint_1"><DIV class="hfom4"> <button class="hform10" onClick="oploadFile()">上传</button>
+						            <span class = "help-inline" id = "spanMessage">选择文件，并上传</span></DIV></DIV>
+						    	    <DIV class="mint_1"><DIV style="height:132px; width:204px;"> <img id="avatarpreview" style="display:none; border-color:#333; border-style:solid; border-width:1px;" width="204px" height="132px"><br></DIV></DIV>
+                        
+                                </div>
+                            </form>
+                        </div>        
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </body>
+</html>

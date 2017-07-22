@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charaset='utf-8'>
+        <link href="../../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../stylesheets/header/manager-header.css" rel="stylesheet" type="text/css">
+        <script src="../../../jquery/dist/jquery.min.js" type="text/javascript"></script>
+        <script src="../../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <% include manager-header.ejs %>
+        <div class="content container">
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <strong>问题编辑</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <form action="/manager/boards/<%=board.bid?board.bid:0%>/save" method="post">
+                                <section class="panel">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">标题</span>
+                                        <input class="form-control" type="text" name="title" value="<%=board.title?board.title:'' %>">
+                                    </div>
+                                </section>
+                                <section class="panel">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">位置</span>
+                                        <input class="form-control" type="text" name="position" value="<%=board.position?board.position:'' %>">
+                                    </div>
+                                </section>
+                                <section class="panel">
+                                    <script type="text/javascript" charset="utf-8" src="../../../ueditor/ueditor.config.js"></script>
+                                    <script type="text/javascript" charset="utf-8" src="../../../ueditor/ueditor.video.js"></script>
+                                    <script type="text/javascript" charset="utf-8" src="../../../ueditor/lang/zh-cn/zh-cn.js"></script>
+                                    <script type="text/plain" id="editor" name="content"></script>
+                                    <script type="text/javascript">
+                                        var ue = UE.getEditor('editor', {initialFrameHeight:400});
+                                        ue.ready(function() {
+                                            if('<%=board.bid%>'){
+                                            $.ajax({
+                                                url: '/manager/boards/<%=board.bid%>/content',
+                                                type: 'GET',
+                                                success: function(result) {
+                                                    ue.setContent(result);
+                                                }
+                                            });}
+                                        });	
+                                    </script>
+                                </section>
+                                <section class="panel">
+                                    <input type="submit" value="保存" class="btn btn-primary">
+                                </section>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
